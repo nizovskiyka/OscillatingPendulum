@@ -1,2 +1,2 @@
 # OscillatingPendulum
-A simple mechanical problem of a pendulum with an oscillating suspension point. Bu default will be written in Python 3, although the language is still to be chosen...
+A simple mechanical problem of a pendulum with an oscillating suspension point. All calculations are done in wxMaxima.
