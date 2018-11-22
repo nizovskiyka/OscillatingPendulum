@@ -1,0 +1,101 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 18.10.1 ] */
+/* [wxMaxima: input   start ] */
+kill(all)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+numer: true$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+H(A,eps) := (p^2)/2+A*p*sin(q)*sin(t/eps) + (A^2)*(sin(q)*sin(t/eps))^2+cos(q); /*normal hamiltonian*/
+/*H(A,eps) :=p*p/2 - cos(q) + A*A*sin(q)*sin(q)/4;*/ /*averaged hamiltonian*/
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+period(z):= [mod(first(z)+%pi, 2*%pi)-%pi, second(z)]$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+poincare(z, A, eps, mu):= period(rest(last(rk([diff(H(A, eps), p), -diff(H(A,eps), q)-mu*diff(H(A,eps), p)], [q, p], z, [t, 0, 2*%pi*eps, 0.1*%pi*eps]))))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+orbit(z, A, eps, mu):=block
+(
+    [zz: z, o: []],
+    for i: 1 thru 1000 do
+    (
+        o: endcons(zz, o),
+        zz: poincare(zz, A, eps, mu)
+    ),
+    return(o)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : 0$ /*unperturbed pendulum*/
+eps : 0.001$
+mu : 0$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : 1$ /*perturbed pendulum*/
+eps : 0.01$
+mu : 0$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : sqrt(2)$/*normal/chaotic boarder*/
+eps : 0.1$
+mu : 0$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : sqrt(2)-1$/*normal curves*/
+eps : 0.1$
+mu : 0$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : sqrt(2)+1$/*chaotic curves*/
+eps : 0.1$
+mu : 0$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : sqrt(2)+1$/*if mu>0 the upper equilibrium is balanced */
+eps : 0.1$
+mu : 1$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A : sqrt(2)+40$/*attractor*/
+eps : 0.1$
+mu : 3$
+wxdraw2d(point_type = dot, points(orbit([1,2], A, eps, mu)),points(orbit([2,0], A, eps, mu)),points(orbit([0,0.5], A, eps, mu)),points(orbit([1,-2], A, eps, mu)));
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 18.10.1"$
